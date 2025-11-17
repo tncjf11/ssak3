@@ -61,10 +61,10 @@ export default function MyPage() {
   return (
     <div className="mypage-root">
       <div className="mypage-wrapper">
-        {/* --- 상단 헤더 --- */}
+        {/* --- 상단 헤더 (메인 상단바와 비율 맞춤) --- */}
         <header className="mypage-header">
           <button onClick={() => navigate(-1)} className="mypage-back-btn">
-            <img src={backIcon} alt="뒤로가기" />
+            <img src={backIcon} alt="뒤로가기" className="mypage-top-icon" />
           </button>
 
           <div className="mypage-logo-box">
@@ -72,7 +72,7 @@ export default function MyPage() {
           </div>
 
           <button className="mypage-search-btn">
-            <img src={searchIcon} alt="검색" />
+            <img src={searchIcon} alt="검색" className="mypage-top-icon" />
           </button>
         </header>
 
@@ -137,29 +137,34 @@ export default function MyPage() {
             </button>
           </div>
 
-          {/* 상품 리스트 */}
+          {/* 상품 리스트 (카드 디자인은 메인페이지와 동일 비율/스타일) */}
           <div className="mypage-item-grid">
             {filteredItems.map((item) => {
               const isLiked = likedMap[item.id] || false;
 
               return (
                 <div key={item.id} className="mypage-item-card">
-                  <div className="mypage-item-img" />
+                  <div className="mypage-card-thumb">
+                    {/* 추후 이미지 생기면 <img src={item.img} ... /> 로 교체 */}
+                    <div className="mypage-card-img-placeholder" />
 
-                  {/* ❤️ 하트 버튼: 클릭 시 채워지거나 비워짐 */}
-                  <button
-                    className="mypage-heart-btn"
-                    aria-label="찜"
-                    type="button"
-                    onClick={() => toggleLike(item.id)}
-                  >
-                    <HeartIcon filled={isLiked} />
-                  </button>
+                    {/* ❤️ 하트 버튼: 메인페이지와 동일 비율/스타일 */}
+                    <button
+                      className="mypage-heart-btn"
+                      aria-label="찜"
+                      type="button"
+                      onClick={() => toggleLike(item.id)}
+                    >
+                      <HeartIcon filled={isLiked} />
+                    </button>
+                  </div>
 
-                  <div className="mypage-item-cat">{item.category}</div>
-                  <div className="mypage-item-title">{item.title}</div>
-                  <div className="mypage-item-price">
-                    {item.price.toLocaleString()}원
+                  <div className="mypage-card-info">
+                    <div className="mypage-card-category">{item.category}</div>
+                    <div className="mypage-card-title">{item.title}</div>
+                    <div className="mypage-card-price">
+                      {item.price.toLocaleString()} <span>원</span>
+                    </div>
                   </div>
                 </div>
               );
@@ -217,7 +222,7 @@ export default function MyPage() {
   );
 }
 
-/* ====== 하트 아이콘 (빈/꽉 찬 토글) — 스타일은 CSS에서 ====== */
+/* ====== 하트 아이콘 (빈/꽉 찬 토글) — 메인페이지와 동일 스타일 ====== */
 function HeartIcon({ filled }) {
   return filled ? (
     // 꽉 찬 하트

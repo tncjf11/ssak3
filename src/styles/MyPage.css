@@ -1,50 +1,60 @@
 .mypage-root {
   display: flex;
   justify-content: center;
-  background: #fff;
+  background: #f5f5f5; /* App.css 바깥 배경과 맞춤 */
 }
 
 .mypage-wrapper {
   width: 100%;
-  max-width: 430px;
+  max-width: 390px;        /* 🔹 메인페이지와 동일 폭 */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #fafafa;     /* 메인 app-frame 배경과 맞춤 */
 }
 
-/* HEADER */
+/* ========= HEADER (메인 상단바와 동일 비율) ========= */
 .mypage-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 16px;
+  height: 56px;                          /* 🔹 메인과 동일 */
   background: #ffffff;
+  border-bottom: 1px solid #ededed;      /* 🔹 메인과 동일 */
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;  /* 🔹 좌/중앙/우 구조 */
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 0;                            /* 🔹 여백 제거 */
 }
 
 .mypage-back-btn,
 .mypage-search-btn {
-  background: none;
   border: none;
-  padding: 4px;
+  background: transparent;
+  width: 44px;                           /* 🔹 메인 home-top-btn과 동일 */
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
 }
 
-.mypage-back-btn img,
-.mypage-search-btn img {
-  width: 20px;
-  height: 20px;
+.mypage-top-icon {
+  width: 22px;                           /* 🔹 메인 top-icon과 동일 */
+  height: 22px;
+  object-fit: contain;
 }
 
 .mypage-logo-box {
-  flex: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .mypage-logo {
-  height: 26px;
+  height: 20px;                          /* 🔹 메인 home-logo와 동일 */
 }
 
-/* BROWN PROFILE AREA */
+/* ========= BROWN PROFILE AREA ========= */
 .mypage-profile-section {
   background: #3a1515;
   color: white;
@@ -129,7 +139,7 @@
   display: block;
 }
 
-/* WHITE CONTENT AREA */
+/* ========= WHITE CONTENT AREA ========= */
 .mypage-content {
   background: white;
   padding-top: 16px;
@@ -158,11 +168,12 @@
   font-size: 11px;
 }
 
-/* ITEM GRID */
+/* ========= ITEM GRID (카드 비율 메인과 동일) ========= */
 .mypage-item-grid {
-  padding: 12px 20px 72px; /* 아래쪽은 BottomNav 고려 */
+  padding: 12px 20px 72px;           /* 아래쪽은 BottomNav 고려 */
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 150px);  /* 🔹 카드 가로 폭 150px 고정 */
+  justify-content: space-between;          /* 🔹 양쪽 여백 균등 */
   gap: 18px 12px;
 }
 
@@ -170,25 +181,41 @@
   position: relative;
 }
 
-.mypage-item-img {
+/* === 카드 썸네일: 메인페이지 home-card-thumb와 동일 비율/스타일 === */
+.mypage-card-thumb {
+  position: relative;
   width: 100%;
-  padding-top: 100%;
-  background: #f4f0ed;
-  border-radius: 14px;
+  height: 150px;          /* 🔹 메인: 150px */
+  border-radius: 14px;    /* 🔹 메인과 동일 */
+  overflow: hidden;
+  background: #eee;       /* 메인: #eee */
+  margin-bottom: 6px;     /* 메인과 동일 */
 }
 
-/* ❤️ 하트 버튼 */
+/* 아직 이미지 없는 상태의 플레이스홀더 */
+.mypage-card-img-placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+/* ❤️ 하트 버튼: 메인페이지 home-heart-btn과 동일 값 */
 .mypage-heart-btn {
   position: absolute;
   top: 6px;
   right: 6px;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
   border: none;
-  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0;
+  background: none !important;
   cursor: pointer;
 }
 
-/* 하트 공통 크기 & 라인 스타일 */
+/* 하트 SVG 공통 */
 .mypage-heart-icon-svg {
   width: 26px;
   height: 26px;
@@ -197,37 +224,48 @@
   stroke-linejoin: round;
 }
 
-/* 꽉 찬 하트 상태 */
+/* 꽉 찬 하트 (메인페이지와 동일) */
 .mypage-heart-icon-svg--filled {
   fill: #ff4b4b;
   stroke: #ff4b4b;
   stroke-width: 1.5;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
 }
 
-/* 빈 하트 상태 */
+/* 빈 하트 (메인페이지와 동일) */
 .mypage-heart-icon-svg--empty {
   fill: none;
   stroke: #ffffff;
   stroke-width: 2.2;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.6));
 }
 
-.mypage-item-cat {
-  margin-top: 6px;
-  font-size: 11px;
-  opacity: 0.7;
+/* 카드 정보 영역: 메인페이지 home-card-info와 동일 구조 */
+.mypage-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.mypage-item-title {
+.mypage-card-category {
+  font-size: 12px;
+  color: #a19191;
+}
+
+.mypage-card-title {
   font-size: 14px;
-  color: #3b2620;
+  font-weight: 500;
+  color: #2b0c0b;
 }
 
-.mypage-item-price {
+.mypage-card-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2b0c0b;
+}
+
+.mypage-card-price span {
   font-size: 14px;
-  font-weight: bold;
-  color: #3b2620;
 }
 
 /* ========================= */
@@ -246,8 +284,8 @@
 
 .mypage-filter-modal {
   width: 100%;
-  max-width: 430px;
-  padding: 0 16px 80px; /* 아래 80px 정도 띄워서 BottomNav 위에 떠 있게 */
+  max-width: 390px;          /* 래퍼 폭과 맞춤 */
+  padding: 0 16px 80px;      /* 아래 80px 정도 띄워서 BottomNav 위에 떠 있게 */
   box-sizing: border-box;
 }
 
