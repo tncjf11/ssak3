@@ -1,3 +1,4 @@
+/* src/styles/MyPage.css */
 .mypage-root {
   display: flex;
   justify-content: center;
@@ -148,10 +149,38 @@
   flex-direction: column;
 }
 
+/* 상품/찜 개수 + 필터 버튼 */
 .mypage-filter-wrap {
   padding: 0 20px;
   display: flex;
-  justify-content: flex-end;
+  align-items: baseline;
+  justify-content: space-between; /* 왼쪽: 상품 갯수, 오른쪽: 판매중 버튼 */
+}
+
+/* 상품/찜 개수 박스 (왼쪽 정렬) */
+.mypage-count {
+  display: flex;
+  align-items: baseline;
+  margin-right: auto;
+}
+
+/* "상품" / "찜" 텍스트 */
+.mypage-count-label {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5a4b3f;
+  margin-right: 4px;
+}
+
+/* 숫자 (더 굵게) */
+.mypage-count-number {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #2b1a10;
 }
 
 .mypage-filter-btn {
@@ -168,12 +197,12 @@
   font-size: 11px;
 }
 
-/* ========= ITEM GRID (★ 3열 그리드로 변경) ========= */
+/* ========= ITEM GRID (3열 그리드) ========= */
 .mypage-item-grid {
-  padding: 12px 12px 72px;           /* 양 옆 살짝 줄여서 3열 여유 확보 */
+  padding: 12px 12px 72px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);  /* 🔹 3개씩 */
-  gap: 16px 8px;                         /* 세로 16, 가로 8 정도 */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 8px;
 }
 
 /* 카드 한 개 */
@@ -181,18 +210,18 @@
   position: relative;
 }
 
-/* === 카드 썸네일: 정사각형(1:1) 비율로 변경 === */
+/* 썸네일: 정사각형 비율 */
 .mypage-card-thumb {
   position: relative;
   width: 100%;
-  padding-top: 100%;      /* 🔹 정사각형 비율 (가로 = 세로) */
+  padding-top: 100%;
   border-radius: 12px;
   overflow: hidden;
   background: #eee;
   margin-bottom: 6px;
 }
 
-/* 이미지/플레이스홀더를 정사각형 영역 안에 꽉 채우기 */
+/* 이미지/플레이스홀더 */
 .mypage-card-img-placeholder {
   position: absolute;
   inset: 0;
@@ -200,7 +229,7 @@
   height: 100%;
 }
 
-/* ❤️ 하트 버튼: 위치는 그대로 */
+/* ❤️ 하트 버튼 */
 .mypage-heart-btn {
   position: absolute;
   top: 6px;
@@ -219,7 +248,7 @@
 
 /* 하트 SVG 공통 */
 .mypage-heart-icon-svg {
-  width: 22px;   /* 카드가 작아졌으니 살짝 축소 */
+  width: 22px;
   height: 22px;
   display: block;
   stroke-linecap: round;
@@ -242,7 +271,7 @@
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.6));
 }
 
-/* 카드 정보 영역: 3열이라 폰트 조금 줄임 */
+/* 카드 정보 영역 */
 .mypage-card-info {
   display: flex;
   flex-direction: column;

@@ -1,24 +1,20 @@
+// src/components/ChatListPage.jsx
 import React, { useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ChatListPage.css";
 
 // 전역 미읽음 컨텍스트
 import { useUnread } from "../state/UnreadContext";
+import BottomNav from "./BottomNav";
 
+// 🔹 임시 채팅 1개 (unreadCount 값만 바꾸면 읽음/안읽음 테스트 가능)
 const mockChats = [
   {
     id: "c1",
     peer: { nickname: "닉네임123" },
     lastMessage: "아직 판매 하고 계신가요?",
     lastMessageAt: "2025-11-03T07:00:00Z",
-    unreadCount: 0,
-  },
-  {
-    id: "c2",
-    peer: { nickname: "닉네임1나ㅏ나ㅏㅏ23" },
-    lastMessage: "제가 사겠습니다 팔아주세요",
-    lastMessageAt: "2025-10-01T02:12:00Z",
-    unreadCount: 4,
+    unreadCount: 4, // 0으로 바꾸면 '읽음 상태(흐리게)'가 됨
   },
 ];
 
@@ -41,7 +37,7 @@ function formatKoreanDate(iso) {
   return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
 }
 
-export default function ChatListPage({ BottomNavComponent }) {
+export default function ChatListPage() {
   const nav = useNavigate();
   const chats = mockChats;
 
@@ -61,7 +57,11 @@ export default function ChatListPage({ BottomNavComponent }) {
     <div className="chat-shell">
       <div className="chat-frame">
         <header className="chat-topbar">
-          <button className="back-btn" onClick={() => nav(-1)} aria-label="뒤로가기">
+          <button
+            className="back-btn"
+            onClick={() => nav(-1)}
+            aria-label="뒤로가기"
+          >
             ←
           </button>
           <h1>1:1 대화 목록</h1>
@@ -70,44 +70,54 @@ export default function ChatListPage({ BottomNavComponent }) {
 
         <main className="chat-main">
           <ul className="chat-list">
-            {chats.map((c) => (
-              <li
-                key={c.id}
-                className="chat-item"
-                role="button"
-                aria-label={`${c.peer.nickname} 채팅방으로 이동`}
-                // ✅ 라우터 수정 없이 쿼리스트링으로 방 ID 전달
-                onClick={() => nav(`/chat/${c.id}`)}
-              >
-                <div className="avatar" />
+            {chats.map((c) => {
+              const isRead = (c.unreadCount || 0) === 0;
 
-                <div className="chat-content">
-                  <div className="chat-row-1">
-                    <span className="nickname">{c.peer.nickname}</span>
-                  </div>
-                  <div
-                    className={
-                      c.unreadCount > 0 ? "last-message unread" : "last-message"
-                    }
-                  >
-                    {c.lastMessage}
-                  </div>
-                </div>
+              return (
+                <li
+                  key={c.id}
+                  className={
+                    "chat-item" + (isRead ? " chat-item--read" : "")
+                  } // ← 읽은 방이면 흐리게
+                  role="button"
+                  aria-label={`${c.peer.nickname} 채팅방으로 이동`}
+                  onClick={() => nav(`/chat/${c.id}`)}
+                >
+                  <div className="avatar" />
 
-                {/* ✅ 오른쪽 메타: 날짜 위, 배지 아래 (간격 확보) */}
-                <div className="right-meta">
-                  <span className="date">{formatKoreanDate(c.lastMessageAt)}</span>
-                  {c.unreadCount > 0 && (
-                    <span className="badge">{c.unreadCount}</span>
-                  )}
-                </div>
-              </li>
-            ))}
+                  <div className="chat-content">
+                    <div className="chat-row-1">
+                      <span className="nickname">{c.peer.nickname}</span>
+                    </div>
+                    <div
+                      className={
+                        c.unreadCount > 0
+                          ? "last-message unread"
+                          : "last-message"
+                      }
+                    >
+                      {c.lastMessage}
+                    </div>
+                  </div>
+
+                  {/* 오른쪽 메타: 날짜 + 배지 */}
+                  <div className="right-meta">
+                    <span className="date">
+                      {formatKoreanDate(c.lastMessageAt)}
+                    </span>
+                    {c.unreadCount > 0 && (
+                      <span className="badge">{c.unreadCount}</span>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </main>
 
-        {/* ✅ 하단 네비게이션 (전역 unreadTotal을 BottomNav가 직접 읽음) */}
-        {BottomNavComponent ? <BottomNavComponent /> : null}
+        {/* 하단 네비게이션 */}
+        <div style={{ height: 56 }} />
+        <BottomNav />
       </div>
     </div>
   );

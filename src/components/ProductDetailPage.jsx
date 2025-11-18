@@ -9,12 +9,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import BottomNav from "./BottomNav";
 import "../styles/ProductDetailPage.css";
 
-// ⬇️ 스티커/로고 이미지 (파일명만 맞춰서 써줘)
-import bearImg from "../image/image.png";        // 곰돌이
-import bubbleImg from "../image/image2.png";     // 말풍선
-import logo from "../image/Group 23.png";        // 상단 로고
+// ⬇️ 스티커/로고 이미지
+import bearImg from "../image/image.png"; // 곰돌이
+import bubbleImg from "../image/image2.png"; // 말풍선
+import logo from "../image/Group 23.png"; // 상단 로고
 
-// ⬇️ 상단 아이콘(뒤로가기, 검색) – 네가 준비한 파일명으로 변경해서 사용
+// ⬇️ 상단 아이콘
 import backIcon from "../image/vector-33.png";
 import searchIcon from "../image/icon-search.png";
 
@@ -29,6 +29,8 @@ const KRW = (n) =>
 
 const DEFAULT_AVATAR_DATA =
   "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><circle cx='40' cy='40' r='40' fill='%23eeeeee'/><circle cx='40' cy='32' r='14' fill='%23cccccc'/><rect x='16' y='50' width='48' height='18' rx='9' fill='%23cccccc'/></svg>";
+
+const DEFAULT_MANNER_TEMP = 35; // 기본 매너온도
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -54,11 +56,12 @@ export default function ProductDetailPage() {
   // 더미 데이터 로드(백엔드 없이 UI 확인용)
   const load = useCallback(async () => {
     setLoading(true);
-    setP({
+
+    const data = {
       id: Number(id) || 1,
       title: "oo H 브랜드 자전거 판매 합니다",
       description:
-        "산 이후로 몇 번 탔던 건데 5,000,000원에 가져가세요\n가격 네고 가능함\n○○ 근처 편의점에서 직거래 우대합니다a\na\na\na\na\na\na\na\na\na\nasdfghhkjasdglhfkusdgh",
+        "산 이후로 몇 번 탔던 건데 5,000,000원에 가져가세요\n가격 네고 가능함\n○○ 근처 편의점에서 직거래 우대합니다",
       price: 5000000,
       status: "ON_SALE",
       category: { name: "가전 / 주방" },
@@ -71,14 +74,16 @@ export default function ProductDetailPage() {
         id: 12,
         nickname: "닉네임12345",
         profile_image_url: "",
-        mannerTemperature: 55.7,
+        mannerTemperature: DEFAULT_MANNER_TEMP, // 기본 35도
       },
       isWishlisted: false,
       wishCount: 0,
       created_at: new Date().toISOString(),
-    });
-    setIsWish(false);
-    setWishCount(0);
+    };
+
+    setP(data);
+    setIsWish(!!data.isWishlisted);
+    setWishCount(data.wishCount ?? 0);
     setIdx(0);
     setLoading(false);
   }, [id]);
@@ -178,6 +183,7 @@ export default function ProductDetailPage() {
     const next = !isWish;
     setIsWish(next);
     setWishCount((c) => c + (next ? 1 : -1));
+
     try {
       const r = await fetch(`/api/products/${p.id}/wishlist`, {
         method: next ? "POST" : "DELETE",
@@ -212,20 +218,18 @@ export default function ProductDetailPage() {
     }
   }, [p, nav]);
 
-  // 매너온도
-  const rawManner = p?.seller?.mannerTemperature;
+  // 매너온도 (기본 35도 사용)
+  const rawManner =
+    p?.seller?.mannerTemperature ?? p?.seller?.manner_temperature ?? DEFAULT_MANNER_TEMP;
+
   const mannerTemp =
     typeof rawManner === "number"
       ? Math.max(0, Math.min(100, rawManner))
-      : null;
+      : DEFAULT_MANNER_TEMP;
+
+  // 색상 단계: 0~36(파랑), 36~60(노랑), 60~100(빨강)
   const tempLevel =
-    mannerTemp == null
-      ? null
-      : mannerTemp < 30
-      ? "low"
-      : mannerTemp < 60
-      ? "mid"
-      : "high";
+    mannerTemp < 36 ? "low" : mannerTemp < 60 ? "mid" : "high";
 
   // 바텀시트 메뉴 동작
   const handleEditPost = () => {

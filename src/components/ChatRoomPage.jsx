@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import BottomNav from "./BottomNav";
 import "../styles/ChatRoomPage.css";
 
@@ -28,22 +28,51 @@ function formatDateDivider(dateLike) {
 }
 
 export default function ChatRoomPage() {
-  const [sp] = useSearchParams();
-  const roomId = sp.get("room") || "temp";
+  // ✅ /chat/:id 경로 지원 (리스트에서 nav(`/chat/${c.id}`)와 맞춤)
+  const { id } = useParams();
+  const roomId = id || "temp";
+
   const nav = useNavigate();
 
+  // 방 메타 정보(임시)
   const [roomMeta] = useState({
     roomId,
-    peer: { id: "", nickname: "닉네임" },
-    product: { id: "", title: "상품 제목", price: 0, thumbUrl: "" },
+    peer: { id: "peer-1", nickname: "닉네임12345" },
+    product: {
+      id: "p1",
+      title: "00자전거 팝니다 사실 분",
+      price: 5350000,
+      thumbUrl: "https://via.placeholder.com/120x120?text=BIKE",
+    },
   });
 
-  const [messages, setMessages] = useState([]);
+  // ✅ 예시 메시지 2개만 기본으로 세팅 (디자인 확인용)
+  const [messages, setMessages] = useState(() => [
+    {
+      id: "m1",
+      roomId,
+      senderId: "peer-1",
+      type: "text",
+      text: "안녕하세요 혹시 물건 거래 가능 할까요?\n가격은 대충 얼마정도 아니면 음.. 한 얼마 얼마 생각 중인데요..",
+      createdAt: "2025-08-16T13:06:00+09:00",
+      sendStatus: "sent",
+    },
+    {
+      id: "m2",
+      roomId,
+      senderId: "me",
+      type: "text",
+      text: "네 가능합니다! 안녕하세요를 너무 적은 거 같은데,,ㅎㅎ",
+      createdAt: "2025-08-16T13:08:00+09:00",
+      sendStatus: "sent",
+    },
+  ]);
+
   const [text, setText] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  // ✅ 추가: 첨부 시트(사진/동영상, 카메라, 닫기)
+  // ✅ 첨부 시트(사진/동영상, 카메라, 닫기)
   const [attachOpen, setAttachOpen] = useState(false);
   const openAttachSheet = () => setAttachOpen(true);
   const triggerGallery = () => {
@@ -63,7 +92,9 @@ export default function ChatRoomPage() {
   // 새 메시지 추가 시 자동으로 맨 아래로
   const scrollToBottom = (smooth = true) => {
     requestAnimationFrame(() => {
-      bottomRef.current?.scrollIntoView({ behavior: smooth ? "smooth" : "auto" });
+      bottomRef.current?.scrollIntoView({
+        behavior: smooth ? "smooth" : "auto",
+      });
     });
   };
   useEffect(() => {
@@ -93,7 +124,9 @@ export default function ChatRoomPage() {
     // fake send
     setTimeout(() => {
       setMessages((prev) =>
-        prev.map((m) => (m.id === tempId ? { ...m, sendStatus: "sent" } : m))
+        prev.map((m) =>
+          m.id === tempId ? { ...m, sendStatus: "sent" } : m
+        )
       );
     }, 400);
   };
@@ -121,7 +154,9 @@ export default function ChatRoomPage() {
         // fake upload
         setTimeout(() => {
           setMessages((prev) =>
-            prev.map((m) => (m.id === tempId ? { ...m, sendStatus: "sent" } : m))
+            prev.map((m) =>
+              m.id === tempId ? { ...m, sendStatus: "sent" } : m
+            )
           );
         }, 500);
       }
@@ -140,7 +175,11 @@ export default function ChatRoomPage() {
     messages.forEach((m) => {
       const d = new Date(m.createdAt);
       if (!prevD || !isSameYMD(prevD, d)) {
-        out.push({ type: "divider", id: `div_${d.toDateString()}`, date: d });
+        out.push({
+          type: "divider",
+          id: `div_${d.toDateString()}`,
+          date: d,
+        });
       }
       out.push({ type: "message", data: m, id: m.id });
       prevD = d;
@@ -153,16 +192,30 @@ export default function ChatRoomPage() {
       <div className="room-frame">
         {/* 상단바 */}
         <header className="room-topbar">
-          <button className="top-btn" onClick={() => nav(-1)} aria-label="뒤로가기">←</button>
+          <button
+            className="top-btn"
+            onClick={() => nav(-1)}
+            aria-label="뒤로가기"
+          >
+            ←
+          </button>
           <h1 className="room-title">{roomMeta.peer.nickname}</h1>
-          <button className="top-btn" onClick={() => setMenuOpen(true)} aria-label="더보기">⋮</button>
+          <button
+            className="top-btn"
+            onClick={() => setMenuOpen(true)}
+            aria-label="더보기"
+          >
+            ⋮
+          </button>
         </header>
 
         {/* 상품 카드 */}
         <section className="product-card">
           <div
             className="thumb"
-            style={{ backgroundImage: `url(${roomMeta.product.thumbUrl || ""})` }}
+            style={{
+              backgroundImage: `url(${roomMeta.product.thumbUrl || ""})`,
+            }}
           />
           <div className="prod-texts">
             <div className="prod-sub">{roomMeta.product.title}</div>
@@ -178,7 +231,7 @@ export default function ChatRoomPage() {
         <main
           className="room-main"
           ref={listRef}
-          style={{ paddingBottom: `70px` }}  // 입력바/배너와 겹치지 않게 여유
+          style={{ paddingBottom: `70px` }} // 입력바/배너와 겹치지 않게 여유
         >
           {!messages.length && (
             <div className="empty-hint">대화를 시작해 보세요.</div>
@@ -198,7 +251,8 @@ export default function ChatRoomPage() {
 
         {/* 경고 배너 (고정) */}
         <div className="safe-banner">
-          [중고 거래 채팅 시 외부 채널 유도 및 개인정보 요구 금지] 매너는 기본, 건강한 거래 문화를 약속해요.
+          [중고 거래 채팅 시 외부 채널 유도 및 개인정보 요구 금지] 매너는
+          기본, 건강한 거래 문화를 약속해요.
         </div>
 
         {/* 입력 바 (고정) */}
@@ -259,12 +313,19 @@ export default function ChatRoomPage() {
           </button>
         </footer>
 
+        {/* 하단 네비게이션 */}
         <BottomNav />
 
-        {/* ✅ 첨부 시트: 사진/동영상 · 카메라 · 닫기 */}
+        {/* 첨부 시트: 사진/동영상 · 카메라 · 닫기 */}
         {attachOpen && (
-          <div className="sheet-backdrop" onClick={() => setAttachOpen(false)}>
-            <div className="bottom-sheet" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="sheet-backdrop"
+            onClick={() => setAttachOpen(false)}
+          >
+            <div
+              className="bottom-sheet"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="sheet-group">
                 <button className="sheet-item" onClick={triggerGallery}>
                   사진 / 동영상
@@ -274,7 +335,10 @@ export default function ChatRoomPage() {
                   카메라
                 </button>
               </div>
-              <button className="sheet-item close" onClick={() => setAttachOpen(false)}>
+              <button
+                className="sheet-item close"
+                onClick={() => setAttachOpen(false)}
+              >
                 닫기
               </button>
             </div>
@@ -283,8 +347,14 @@ export default function ChatRoomPage() {
 
         {/* ⋮ 메뉴 (필요시 확장) */}
         {menuOpen && (
-          <div className="sheet-backdrop" onClick={() => setMenuOpen(false)}>
-            <div className="bottom-sheet" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="sheet-backdrop"
+            onClick={() => setMenuOpen(false)}
+          >
+            <div
+              className="bottom-sheet"
+              onClick={(e) => e.stopPropagation()}
+            >
               <button
                 className="sheet-item danger"
                 onClick={() => {
@@ -294,7 +364,10 @@ export default function ChatRoomPage() {
               >
                 채팅방 나가기
               </button>
-              <button className="sheet-item close" onClick={() => setMenuOpen(false)}>
+              <button
+                className="sheet-item close"
+                onClick={() => setMenuOpen(false)}
+              >
                 닫기
               </button>
             </div>
@@ -311,16 +384,29 @@ function MessageBubble({ meId, msg }) {
     <div className={"msg-row " + (mine ? "mine" : "peer")}>
       <div className={"bubble " + msg.type}>
         {msg.type === "text" && <span>{msg.text}</span>}
-        {msg.type === "image" && <img className="media" src={msg.media?.url} alt="" />}
+        {msg.type === "image" && (
+          <img className="media" src={msg.media?.url} alt="" />
+        )}
         {msg.type === "video" && (
-          <video className="media" src={msg.media?.url} controls playsInline />
+          <video
+            className="media"
+            src={msg.media?.url}
+            controls
+            playsInline
+          />
         )}
       </div>
       <div className="meta">
         <span className="time">{formatKoreanTime(msg.createdAt)}</span>
-        {mine && msg.sendStatus === "sent" && <span className="read">읽음</span>}
-        {mine && msg.sendStatus === "sending" && <span className="read">전송중…</span>}
-        {mine && msg.sendStatus === "failed" && <span className="read fail">실패</span>}
+        {mine && msg.sendStatus === "sent" && (
+          <span className="read">읽음</span>
+        )}
+        {mine && msg.sendStatus === "sending" && (
+          <span className="read">전송중…</span>
+        )}
+        {mine && msg.sendStatus === "failed" && (
+          <span className="read fail">실패</span>
+        )}
       </div>
     </div>
   );

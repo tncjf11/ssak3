@@ -21,6 +21,9 @@ import BottomNav from "./BottomNav";
 export default function MainPage() {
   const nav = useNavigate();
 
+  // TODO: 추후 로그인한 사용자 이름으로 교체
+  const userName = "주예원";
+
   const categories = [
     { id: "book", label: "도서 / 문구", icon: iconBook },
     { id: "cloth", label: "의류", icon: iconCloth },
@@ -28,61 +31,9 @@ export default function MainPage() {
     { id: "etc", label: "도우미 / 기타", icon: iconEtc },
   ];
 
-  // 임시 추천 상품
-  const [recommended, setRecommended] = useState([
-    {
-      id: 1,
-      img: "https://via.placeholder.com/300x300?text=아이폰",
-      category: "가전 / 주방",
-      title: "중고 아이폰 사실 분",
-      price: 5350000,
-      liked: false,
-    },
-    {
-      id: 2,
-      img: "https://via.placeholder.com/300x300?text=향수",
-      category: "도우미 / 기타",
-      title: "향수 ㅇㅇ 개봉만함",
-      price: 350000,
-      liked: false,
-    },
-    {
-      id: 3,
-      img: "https://via.placeholder.com/300x300?text=전공서적",
-      category: "도서 / 문구",
-      title: "00전공서적 팝니다",
-      price: 50000,
-      liked: false,
-    },
-  ]);
-
-  // 임시 찜 목록
-  const [likedList, setLikedList] = useState([
-    {
-      id: 101,
-      img: "https://via.placeholder.com/300x300?text=자전거",
-      category: "가전 / 주방",
-      title: "00자전거 팝니다 사실 분",
-      price: 5350000,
-      liked: true,
-    },
-    {
-      id: 102,
-      img: "https://via.placeholder.com/300x300?text=향수",
-      category: "도우미 / 기타",
-      title: "향수 ㅇㅇ 개봉만함",
-      price: 350000,
-      liked: true,
-    },
-    {
-      id: 103,
-      img: "https://via.placeholder.com/300x300?text=전공서적",
-      category: "도서 / 문구",
-      title: "00전공서적 팝니다",
-      price: 50000,
-      liked: true,
-    },
-  ]);
+  // 추천 상품 / 찜 목록은 백엔드 연동 후 데이터로 채울 예정 (초기값만 빈 배열)
+  const [recommended, setRecommended] = useState([]);
+  const [likedList, setLikedList] = useState([]);
 
   const toggleLikeR = (id) => {
     setRecommended((prev) =>
@@ -146,7 +97,9 @@ export default function MainPage() {
 
         {/* 추천상품 */}
         <section className="home-section">
-          <h2 className="home-section-title">주예원 님 이런 상품은 어떠세요?</h2>
+          <h2 className="home-section-title">
+            {userName} 님 이런 상품은 어떠세요?
+          </h2>
 
           <div className="home-product-row">
             {recommended.map((p) => (
@@ -163,7 +116,7 @@ export default function MainPage() {
 
         {/* 찜목록 */}
         <section className="home-section">
-          <h2 className="home-section-title">주예원 님의 찜 목록!</h2>
+          <h2 className="home-section-title">{userName} 님의 찜 목록!</h2>
           <p className="home-subcopy">
             찜했던 그거! ⏰ 놓치기 아깝잖아요? 다시 보러 오세요!
           </p>
@@ -212,7 +165,8 @@ function ProductCard({ data, toggleLike }) {
         <div className="home-card-category">{category}</div>
         <div className="home-card-title">{title}</div>
         <div className="home-card-price">
-          {price.toLocaleString()} <span>원</span>
+          {price?.toLocaleString?.() ?? ""}
+          {price != null && <span> 원</span>}
         </div>
       </div>
     </article>

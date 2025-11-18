@@ -127,7 +127,7 @@
   background: #eee;
   display: flex;
   align-items: center;
-  padding-right: 40px; /* 내부 아이콘 자리 */
+  padding-right: 52px; /* 내부 아이콘 자리 */
 }
 .msg-input {
   width: 100%;
@@ -147,8 +147,17 @@
   transform: translateY(-50%);
   border: none;
   background: transparent;
+  width: 36px;          /* 🔼 클릭 영역 키우기 */
+  height: 36px;         /* 🔼 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.icon-img { width: 22px; height: 22px; }
+
+.icon-img {
+  width: 40px;          /* 🔼 아이콘 자체 크기 업 */
+  height: 40px;         /* 🔼 */
+}
 
 /* 전송 버튼 */
 .send-btn {
@@ -213,4 +222,10 @@
 .sheet-divider {
   height: 1px;
   background: #eee;
+}
+
+.icon-btn.inside .icon-img {
+  width: 32px !important;
+  height: 32px !important;
+  object-fit: contain !important;
 }
