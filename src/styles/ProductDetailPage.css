@@ -266,7 +266,7 @@
   width: 52px;
   height: 52px;
   border: none;
-  background: transparent;
+  background: transparent; /* 버튼 배경 제거 */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -288,20 +288,19 @@
   width: 24px;
   height: 24px;
   display: block;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  background: transparent; /* 혹시 모를 배경 제거 */
 }
 .ss-heart-icon-svg--filled {
   fill: #ff4b4b;
   stroke: #ff4b4b;
   stroke-width: 1.5;
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+  /* drop-shadow 제거해서 뒤에 하얀/회색 테두리 느낌 없애기 */
 }
 .ss-heart-icon-svg--empty {
   fill: none;
   stroke: #7a6f6f;
   stroke-width: 2.1;
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.4));
+  /* drop-shadow 제거 */
 }
 
 /* 스켈레톤 */
@@ -397,7 +396,6 @@ button:focus-visible {
   width: 140px;
   z-index: 5;
   pointer-events: none;
-
   animation: sticker-pop 0.45s ease-out forwards;
   opacity: 0;
 }

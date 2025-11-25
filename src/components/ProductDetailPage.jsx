@@ -23,6 +23,10 @@ import logo from "../image/Group 23.png";
 import backIcon from "../image/vector-33.png";
 import searchIcon from "../image/icon-search.png";
 
+// 🔌 공통 API BASE
+import { BASE_URL } from "../lib/api";
+
+
 // 🔹 더미 데이터
 import { MOCK_PRODUCTS } from "../data/mockProducts";
 
@@ -30,8 +34,9 @@ import { MOCK_PRODUCTS } from "../data/mockProducts";
 import loaderImg from "../image/loader.png";
 
 // ====== 백엔드 연동용 기본 설정 ======
-const API_BASE = "http://localhost:8080"; // 명세서 기준 서버 주소
-const USER_ID = 1; // TODO: 로그인 붙으면 실제 로그인 유저 ID로 교체
+const API_BASE = BASE_URL; 
+const USER_ID = 1; // 로그인 붙기 전 임시
+
 
 const KRW = (n) =>
   typeof n === "number"

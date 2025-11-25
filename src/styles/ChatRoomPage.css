@@ -1,19 +1,24 @@
-/* 프레임 */
+/* =========================
+   전체 프레임
+========================= */
 .room-shell {
   min-height: 100vh;
   background: #fafafa;
   display: flex;
   justify-content: center;
 }
+
 .room-frame {
   width: 100%;
   max-width: 390px;
   display: grid;
-  grid-template-rows: 56px 80px 1fr auto auto; /* 상단/상품/본문/배너/입력바 */
+  grid-template-rows: 56px 80px 1fr auto auto;
   background: #fafafa;
 }
 
-/* 상단바 */
+/* =========================
+   상단바
+========================= */
 .room-topbar {
   display: grid;
   grid-template-columns: 56px 1fr 56px;
@@ -22,6 +27,7 @@
   border-bottom: 1px solid #ededed;
   z-index: 2;
 }
+
 .top-btn {
   width: 44px;
   height: 44px;
@@ -30,6 +36,7 @@
   font-size: 22px;
   color: #2b0c0b;
 }
+
 .room-title {
   text-align: center;
   font-size: 16px;
@@ -37,7 +44,9 @@
   color: #2b0c0b;
 }
 
-/* 상품 카드 */
+/* =========================
+   상품 카드
+========================= */
 .product-card {
   display: grid;
   grid-template-columns: 60px 1fr;
@@ -46,7 +55,7 @@
   background: #fff;
   padding: 10px 14px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  cursor: pointer;              /* 👈 이 줄만 추가 */
+  cursor: pointer;
 }
 
 .thumb {
@@ -55,17 +64,40 @@
   border-radius: 10px;
   background: #e8e5e3 center/cover no-repeat;
 }
-.prod-texts { display: flex; flex-direction: column; gap: 4px; }
-.prod-sub   { font-size: 14px; color: #7a6f6f; }
-.prod-price { font-size: 20px; font-weight: 700; color: #2b0c0b; }
 
-/* 메시지 목록 (여기만 스크롤) */
+.prod-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prod-sub {
+  font-size: 14px;
+  color: #7a6f6f;
+}
+
+.prod-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2b0c0b;
+}
+
+/* =========================
+   메시지 목록
+========================= */
 .room-main {
   overflow-y: auto;
   background: #fafafa;
-  padding: 10px 12px 16px;  /* 하단 padding-bottom은 인라인 스타일로 여유 추가 */
+  padding: 10px 12px 16px;
 }
-.empty-hint { color:#9a8e88; font-size:13px; text-align:center; margin-top: 24px; }
+
+.empty-hint {
+  color: #9a8e88;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 24px;
+}
+
 .date-divider {
   font-size: 12px;
   color: #7a6f6f;
@@ -76,10 +108,23 @@
   padding: 2px 10px;
 }
 
-/* 버블(조금 작게) */
-.msg-row { display: flex; flex-direction: column; margin: 5px 0; }
-.msg-row.peer { align-items: flex-start; }
-.msg-row.mine { align-items: flex-end; }
+/* =========================
+   메시지 버블
+========================= */
+.msg-row {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0;
+}
+
+.msg-row.peer {
+  align-items: flex-start;
+}
+
+.msg-row.mine {
+  align-items: flex-end;
+}
+
 .bubble {
   max-width: 70%;
   padding: 8px 10px;
@@ -87,41 +132,94 @@
   border-radius: 14px;
   line-height: 1.35;
 }
-.peer .bubble { background: #fff; border: 1px solid #2b0c0b; border-radius: 14px 14px 14px 4px; }
-.mine .bubble { background: #2b0c0b; color: #fff; border-radius: 14px 14px 4px 14px; }
-.media { width: 200px; border-radius: 12px; display:block; }
 
-/* 시간/읽음 */
-.meta { display: flex; gap: 6px; font-size: 10.5px; color: #a9a1a1; margin-top: 2px; }
-.meta .fail { color: #f72623; }
-
-/* 경고 배너 (고정) */
-.safe-banner {
-  position: sticky;
-  bottom: 130px;  /* 72(하단탭) + ~56(입력바) 여유 */
+.peer .bubble {
   background: #fff;
-  border-top: 1px solid #ededed;
-  color: #7b6e6e;
-  font-size: 12px;
-  padding: 10px 12px;
-  z-index: 2;
+  border: 1px solid #2b0c0b;
+  border-radius: 14px 14px 14px 4px;
 }
 
-/* 입력바 (고정) */
+.mine .bubble {
+  background: #2b0c0b;
+  color: #fff;
+  border-radius: 14px 14px 4px 14px;
+}
+
+.media {
+  width: 200px;
+  border-radius: 12px;
+  display: block;
+}
+
+/* =========================
+   시간 / 읽음
+========================= */
+.meta {
+  display: flex;
+  gap: 6px;
+  font-size: 10.5px;
+  color: #a9a1a1;
+  margin-top: 2px;
+}
+
+.meta .fail {
+  color: #f72623;
+}
+
+/* =========================
+   안전 배너 (safe-banner)
+========================= */
+.safe-banner {
+  position: sticky;
+  bottom: 68px;
+  background: #EEEDED;
+  border-top: 1px solid #E5D5C8;
+  padding: 12px 14px;
+  padding-left: 52px;
+  z-index: 2;
+  position: relative;
+}
+
+/* warning_mark 아이콘 전용 */
+.safe-banner .safe-icon {
+  position: absolute;
+  left: 18px;
+  top: 34%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.safe-top {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #AAA1A0;
+  margin-bottom: 4px;
+}
+
+.safe-bottom {
+  font-size: 11px;
+  color: #C9C3C1;
+  margin-top: 2px;
+}
+
+/* =========================
+   입력바
+========================= */
 .input-bar {
   position: sticky;
-  bottom: 72px; /* 하단 탭 높이 */
+  bottom: 68px;
   background: #fff;
   border-top: 1px solid #ededed;
   display: grid;
-  grid-template-columns: 1fr 48px; /* 입력창 / 전송버튼 */
+  grid-template-columns: 1fr 48px;
   gap: 8px;
   align-items: center;
   padding: 10px 12px;
   z-index: 3;
 }
 
-/* 입력창 + 내부 카메라 */
 .input-wrap {
   position: relative;
   height: 42px;
@@ -129,8 +227,9 @@
   background: #eee;
   display: flex;
   align-items: center;
-  padding-right: 52px; /* 내부 아이콘 자리 */
+  padding-right: 52px;
 }
+
 .msg-input {
   width: 100%;
   border: none;
@@ -140,28 +239,35 @@
   font-size: 15px;
   color: #2b0c0b;
 }
-.msg-input::placeholder { color: #bfbfbf; }
 
-.icon-btn.inside {
+.msg-input::placeholder {
+  color: #bfbfbf;
+}
+
+/* ===== 카메라 아이콘 전용 ===== */
+.input-bar .icon-btn.inside {
   position: absolute;
   right: 6px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
   background: transparent;
-  width: 36px;          /* 🔼 클릭 영역 키우기 */
-  height: 36px;         /* 🔼 */
+  width: 40px;   /* 버튼 박스 */
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.icon-img {
-  width: 40px;          /* 🔼 아이콘 자체 크기 업 */
-  height: 40px;         /* 🔼 */
+.input-bar .icon-btn.inside .icon-img {
+  width: 28px;   /* 실제 카메라 그림 크기 */
+  height: 28px;
+  object-fit: contain;
 }
 
-/* 전송 버튼 */
+/* =========================
+   전송 버튼
+========================= */
 .send-btn {
   width: 48px;
   height: 36px;
@@ -171,76 +277,136 @@
   display: grid;
   place-items: center;
 }
-.send-btn:not(.disabled) { background: #2b0c0b; }
-.send-btn.disabled { opacity: .45; cursor: default; }
-.send-img { width: 24px; height: 24px; }
 
-/* 바텀시트 공통 */
+.send-btn:not(.disabled) {
+  background: #2b0c0b;
+}
+
+.send-btn.disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.send-img {
+  width: 24px;
+  height: 24px;
+}
+
+/* =========================
+   Backdrop (공통)
+========================= */
 .sheet-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,.25);
-  display:flex;
-  align-items: flex-start;
-  padding-top: calc(100vh - 250px);
-  justify-content:center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
   z-index: 1200;
 }
+
+/* =========================
+   공통 바텀시트
+========================= */
 .bottom-sheet {
-  width: 92%;                  /* ← 100% 대신 적당히 여백 있는 비율 */
-  max-width: 360px;            /* ← 채팅 프레임보다 살짝 작게 */
-  margin: 0 auto;              /* ← 중앙 정렬 */
-  background:#fff;
+  width: 100%;
+  max-width: 390px;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 14px 14px 18px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.12);
+
+  /* BottomNav 위에 살짝 띄워 두고 싶으면 높이 조절 */
+  margin-bottom: 68px !important;
+}
+
+/* =========================
+   메뉴 시트 (⋮)
+========================= */
+.bottom-sheet.menu-sheet {
+  background: #F2F1F0;
+  border-radius: 20px 20px 0 0;
+  padding: 14px 14px 20px;
+}
+
+.bottom-sheet.menu-sheet .sheet-item {
+  width: 100%;
+  height: 52px;
+  margin: 8px 0;
+  background: #ffffff;
   border-radius: 16px;
-  padding: 10px 12px 8px;
-  box-shadow: 0 0 20px rgba(0,0,0,.12);
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2B0C0B;
 }
 
-.sheet-item {
-  width:100%;
-  height:48px;
-  border:0;
-  border-radius:12px;
-  margin: 6px 0;
-  background:#f7f5f4;
-  font-size:15px;
-  color:#2b0c0b;
-  font-weight:600;
+.bottom-sheet.menu-sheet .sheet-item.danger {
+  color: #FF4E3B !important;
 }
-.sheet-item.close { background:#ece9e7; }
-.sheet-item.danger { background:#ffeaea; color:#c10000; }
 
-/* ✅ 첨부 시트용 보조 스타일 */
+.bottom-sheet.menu-sheet .sheet-item.close {
+  color: #2B0C0B !important;
+}
+
+/* =========================
+   첨부 시트
+========================= */
+.sheet-item.close {
+  background: #ece9e7;
+}
+
+.sheet-item.danger {
+  background: #ffeaea;
+  color: #c10000;
+}
+
 .sheet-group {
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
   margin: 6px 0;
 }
+
 .sheet-group .sheet-item {
   margin: 0;
   border-radius: 0;
 }
+
 .sheet-divider {
   height: 1px;
   background: #eee;
 }
 
-.icon-btn.inside .icon-img {
-  width: 32px !important;
-  height: 32px !important;
-  object-fit: contain !important;
-}
-
-/* ===== WebRTC 카메라 모달 ===== */
-.cam-backdrop {
+/* =========================
+   이미지 전체 보기
+========================= */
+.img-viewer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1400;
+}
+
+.img-viewer-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+/* =========================
+   카메라 모달
+========================= */
+.cam-backdrop {
+  position: fixed;
+  inset: 0;                           /* 화면 전체 덮기 */
+  background: rgba(0, 0, 0, 0.55);    /* 반투명 검정 배경 */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1500;
+  z-index: 1500;                      /* 시트/배너 위로 */
 }
 
 .cam-modal {
@@ -299,21 +465,6 @@
 .cam-btn.primary {
   background: #ff5c5c;
 }
-
-/* ===== 이미지 전체 보기 모달 ===== */
-.img-viewer-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1400;
+.bottom-sheet.attach-sheet {
+  border-radius: 20px 20px 0 0;  /* 위-위-아래-아래 */
 }
-
-.img-viewer-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-

@@ -15,7 +15,7 @@
   box-sizing: border-box;
 }
 
-/* 상단바 – MyPage와 동일한 높이/구조 */
+/* 상단바 */
 .sp-topbar {
   height: 56px;
   background: #ffffff;
@@ -25,7 +25,20 @@
   align-items: center;
   position: sticky;
   top: 0;
-  z-index: 3;
+  z-index: 20;        /* 🔺 리스트보다 확실히 위로 */
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+/* 상단바 아래 빈틈(8px)을 덮어주는 회색 띠 */
+.sp-topbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;       /* nav 아래로 8px 내려가게 */
+  height: 9px;        /* gap 만큼만 덮기 */
+  background: #fafafa; /* 검색창 배경과 동일한 회색 */
 }
 
 .sp-back {
@@ -49,12 +62,15 @@
   height: 20px;
 }
 
+/* 곰 마스코트 – 살짝 더 아래로 내리기 */
 .sp-mascot {
-  position: relative;
+  position: absolute;
+  top: 4px;      /* 🔥 원래 -10px 에서 조금 아래로 */
+  right: 6px;
   width: 56px;
   height: 56px;
-  justify-self: end;
-  margin-right: 6px;
+  pointer-events: none;
+  z-index: 5;
 }
 
 .mascot-1 {
@@ -73,9 +89,18 @@
   height: 32px;
 }
 
+/* 검색창+최근검색어+상품개수/정렬 전체 블록 */
+.sp-header-block {
+  position: sticky;
+  top: 64px;
+  z-index: 10;      /* 🔺 nav보다는 낮게, 상품 카드보다는 높게 */
+  background: #fafafa;
+  padding-bottom: 6px;
+}
+
 /* 검색창 */
 .sp-searchbar {
-  margin: 14px 12px 8px;
+  margin: 4px 12px 6px;   /* 위쪽 nav와 꽉 붙게, 아래는 살짝 여유 */
   position: relative;
 }
 
@@ -118,10 +143,10 @@
   background-color: #f4ece7;
 }
 
-/* 섹션 & 칩들 */
+/* 섹션 & 칩들 (최근검색어 / 필터) */
 .sp-section {
   padding: 0 16px;
-  margin-top: 10px;
+  margin-top: 8px;
   box-sizing: border-box;
 }
 
@@ -177,12 +202,13 @@
   font-size: 12px;
 }
 
-/* 리스트 헤더 */
+/* 상품 개수 + 정렬 (이제는 header-block 안에서만 레이아웃 담당) */
 .sp-list-header {
-  margin: 14px 16px 8px;
+  margin: 10px 16px 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .sp-list-header .left {
@@ -216,7 +242,7 @@
   color: #2b0c0b;
 }
 
-/* 상품 목록 */
+/* 상품 목록 (여기부터는 스크롤로 움직임) */
 .sp-product-list {
   padding: 0 12px;
   display: flex;
@@ -224,7 +250,7 @@
   gap: 12px;
 }
 
-/* 카드 – 카테고리 페이지와 동일한 grid 구조 */
+/* 카드 */
 .sp-card {
   position: relative;
   display: grid;
@@ -238,7 +264,7 @@
   cursor: pointer;
 }
 
-/* 썸네일 래퍼 (카테고리 .cat-thumb-wrap와 동일 역할) */
+/* 썸네일 */
 .sp-thumb-wrap {
   position: relative;
   width: 100px;
@@ -255,7 +281,7 @@
   display: block;
 }
 
-/* 카드 본문 – 의류 / 제목 / 가격 / 닉네임 간격 1px 수준 */
+/* 카드 본문 */
 .sp-card .info {
   flex: 1;
   display: flex;
@@ -291,7 +317,7 @@
   white-space: nowrap;
 }
 
-/* 찜 버튼 – 카테고리 페이지 스타일 */
+/* 찜 버튼 */
 .like-btn {
   align-self: start;
   justify-self: end;
@@ -359,14 +385,16 @@
   transition: 0.3s ease;
 }
 
-/* 상태 스티커 – 정중앙 (카테고리와 동일 느낌) */
+/* 상태 스티커 – 정중앙 */
 .sp-status-sticker {
   position: absolute;
-  top: 50%;
+  top: 50%;        /* ✅ 다시 썸네일 정중앙 */
   left: 50%;
   width: 68px;
-  z-index: 3;
   pointer-events: none;
+
+  /* 🔻 nav / header-block 보다 항상 아래에 있도록 */
+  z-index: 1;
 
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.8);
