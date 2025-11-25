@@ -200,3 +200,43 @@
     transform: translate(-50%, -50%) scale(1);
   }
 }
+
+/* ===== 카테고리 로딩 화면 ===== */
+.cat-loading-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+}
+
+.cat-loading-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.cat-loading-img {
+  width: 300px;   /* 더 크게 하고 싶으면 200px 정도로 변경해도 됨 */
+  height: 300px;
+  object-fit: contain;
+  animation: cat-bounce 0.9s ease-in-out infinite;
+}
+
+.cat-loading-text {
+  margin: 0;
+  font-size: 30px;
+  color: #8d8585;
+}
+
+/* 통통 튀는 애니메이션 */
+@keyframes cat-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}

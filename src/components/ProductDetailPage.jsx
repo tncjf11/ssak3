@@ -26,6 +26,9 @@ import searchIcon from "../image/icon-search.png";
 // 🔹 더미 데이터
 import { MOCK_PRODUCTS } from "../data/mockProducts";
 
+// 🔹 로딩 이미지
+import loaderImg from "../image/loader.png";
+
 // ====== 백엔드 연동용 기본 설정 ======
 const API_BASE = "http://localhost:8080"; // 명세서 기준 서버 주소
 const USER_ID = 1; // TODO: 로그인 붙으면 실제 로그인 유저 ID로 교체
@@ -90,20 +93,6 @@ export default function ProductDetailPage() {
       const res = await fetch(`${API_BASE}/api/products/${id}`);
       if (!res.ok) throw new Error("상품 조회 실패");
       const raw = await res.json();
-
-      // 명세서 기준 예시:
-      // {
-      //   id, title, description, price,
-      //   status: "ON_SALE" | "RESERVED" | "SOLD_OUT",
-      //   categoryName,
-      //   sellerId,
-      //   sellerNickname,
-      //   likeCount,
-      //   imageUrls: ["/uploads/a.jpg", ...],
-      //   isWishlisted (선택),
-      //   mannerTemperature (선택),
-      //   profileImageUrl (선택)
-      // }
 
       const images = Array.isArray(raw.imageUrls)
         ? raw.imageUrls.map((path) =>
@@ -369,7 +358,22 @@ export default function ProductDetailPage() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  // 🔹 여기서부터 로딩 UI
+  if (loading) {
+    return (
+      <div className="ss-loading">
+        <div className="ss-loading-inner">
+          <img
+            src={loaderImg}
+            alt="로딩중"
+            className="ss-loading-img"
+          />
+          <div className="ss-loading-text">로딩중...</div>
+        </div>
+      </div>
+    );
+  }
+
   if (!p) return <div>상품이 없어요.</div>;
 
   return (

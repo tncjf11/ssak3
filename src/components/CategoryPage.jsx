@@ -12,6 +12,9 @@ import { MOCK_PRODUCTS } from "../data/mockProducts";
 import stickerReserved from "../image/status-reserved.png";
 import stickerSoldout from "../image/status-soldout.png";
 
+// 🔹 로딩 이미지
+import loaderImg from "../image/loader.png";
+
 const API_BASE = "http://localhost:8080";
 
 /** 공통 카테고리 라벨 */
@@ -150,7 +153,22 @@ export default function CategoryPage() {
     );
   };
 
-  if (loading) return <div className="loading">Loading…</div>;
+  /** 🔹 로딩 화면 (상세페이지 스타일 비슷하게) */
+  if (loading) {
+    return (
+      <div className="cat-loading-wrap">
+        <div className="cat-loading-inner">
+          <img
+            src={loaderImg}
+            alt="로딩중"
+            className="cat-loading-img"
+            draggable={false}
+          />
+          <p className="cat-loading-text">로딩중...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="cat-shell">
@@ -275,10 +293,16 @@ export default function CategoryPage() {
         {sortOpen && (
           <div className="sheet-backdrop" onClick={() => setSortOpen(false)}>
             <div className="bottom-sheet" onClick={(e) => e.stopPropagation()}>
-              <button className="sheet-item" onClick={() => setSortType("인기순")}>
+              <button
+                className="sheet-item"
+                onClick={() => setSortType("인기순")}
+              >
                 인기순
               </button>
-              <button className="sheet-item" onClick={() => setSortType("최신순")}>
+              <button
+                className="sheet-item"
+                onClick={() => setSortType("최신순")}
+              >
                 최신순
               </button>
               <button
