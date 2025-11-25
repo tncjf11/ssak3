@@ -63,9 +63,11 @@
   padding: 32px 20px 0;
 }
 
+/* 🔥 프로필+로그아웃 한 줄 */
 .mypage-profile-top {
+  position: relative; /* 로그아웃 absolute 기준 */
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -93,18 +95,43 @@
   opacity: 0.7;
 }
 
-.mypage-temperature {
-  font-size: 18px;
-  font-weight: bold;
+/* 🔥 오른쪽 위 고정 로그아웃 버튼 */
+.mypage-logout-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 6px 14px;
+  background: #ffe3e3;
+  border: 1px solid #ffb8b8;
+  color: #b44343;
+  font-size: 13px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.mypage-logout-btn:active {
+  background: #ffcdcd;
 }
 
 .mypage-temp-barwrap {
-  margin-top: 12px;
+  margin-top: 18px;
+}
+
+.mypage-temp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .mypage-temp-label {
   font-size: 13px;
   color: #f8e29c;
+}
+
+.mypage-temp-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .mypage-temp-bar {
@@ -217,14 +244,6 @@
   overflow: hidden;
   background: #eee;
   margin-bottom: 6px;
-}
-
-/* (예전 placeholder, 사용 안 해도 무방) */
-.mypage-card-img-placeholder {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
 }
 
 /* 썸네일 이미지 */
@@ -399,32 +418,4 @@
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
-}
-
-.mypage-temp-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.mypage-temp-value {
-  font-size: 16px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.mypage-logout-btn {
-  margin: 10px auto 20px;
-  display: block;
-  padding: 8px 16px;
-  background: #ffe3e3;
-  border: 1px solid #ffb8b8;
-  color: #b44343;
-  font-size: 14px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.mypage-logout-btn:active {
-  background: #ffcdcd;
 }
