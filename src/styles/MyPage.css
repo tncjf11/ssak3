@@ -412,3 +412,19 @@
   font-weight: 700;
   color: #ffffff;
 }
+
+.mypage-logout-btn {
+  margin: 10px auto 20px;
+  display: block;
+  padding: 8px 16px;
+  background: #ffe3e3;
+  border: 1px solid #ffb8b8;
+  color: #b44343;
+  font-size: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.mypage-logout-btn:active {
+  background: #ffcdcd;
+}

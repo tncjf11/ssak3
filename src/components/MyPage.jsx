@@ -25,14 +25,13 @@ export default function MyPage() {
 
   const [activeTab, setActiveTab] = useState("my");
   const [filterOpen, setFilterOpen] = useState(false);
-  // ✅ 상태값: "판매중" | "예약중" | "판매완료"
   const [filterStatus, setFilterStatus] = useState("판매중");
 
   const temperature = 55.7;
   const sellCount = 12;
   const nickname = "닉네임님안녕하세요";
 
-  // ✅ 임시 상품 데이터 (status 통일)
+  // 임시 아이템
   const [items, setItems] = useState([
     {
       id: 1,
@@ -86,22 +85,15 @@ export default function MyPage() {
       price: 50000,
       status: "판매중",
       wished: false,
-      img: "https://picsum.photos/300?6",
+      img: "httpsum.photos/300?6",
     },
   ]);
 
   const myItems = items;
-  const wishItems = useMemo(
-    () => items.filter((item) => item.wished),
-    [items]
-  );
-
+  const wishItems = useMemo(() => items.filter((item) => item.wished), [items]);
   const baseList = activeTab === "my" ? myItems : wishItems;
 
-  // ✅ 선택된 상태만 필터링
-  const filteredItems = baseList.filter(
-    (item) => item.status === filterStatus
-  );
+  const filteredItems = baseList.filter((item) => item.status === filterStatus);
 
   const productCount = myItems.length;
   const wishCount = wishItems.length;
@@ -120,6 +112,11 @@ export default function MyPage() {
         item.id === id ? { ...item, wished: !item.wished } : item
       )
     );
+  };
+
+  const handleLogout = () => {
+    // 로그아웃 처리 로직 필요하면 추가하면 됨
+    navigate("/login");
   };
 
   return (
@@ -159,6 +156,12 @@ export default function MyPage() {
             </div>
           </div>
 
+          {/* 🔥 로그아웃 버튼 추가 */}
+          <button className="mypage-logout-btn" onClick={handleLogout}>
+            로그아웃
+          </button>
+
+          {/* 나눔 온기 */}
           <div className="mypage-temp-barwrap">
             <div className="mypage-temp-row">
               <span className="mypage-temp-label">나눔 온기</span>
@@ -228,7 +231,6 @@ export default function MyPage() {
                   onClick={() => navigate(`/product/${item.id}`)}
                 >
                   <div className="mypage-card-thumb">
-                    {/* 썸네일 이미지 */}
                     <img
                       src={item.img}
                       alt={item.title}
@@ -239,7 +241,6 @@ export default function MyPage() {
                       }
                     />
 
-                    {/* 상태 스티커 (예약중 / 판매완료) */}
                     {item.status === "예약중" && (
                       <img
                         src={stickerReserved}
@@ -256,11 +257,10 @@ export default function MyPage() {
                       />
                     )}
 
-                    {/* ❤️ 하트 */}
                     <button
                       className="mypage-heart-btn"
                       onClick={(e) => {
-                        e.stopPropagation(); // 카드 전체 클릭(상세 이동) 막기
+                        e.stopPropagation();
                         toggleLike(item.id);
                       }}
                     >
@@ -269,9 +269,7 @@ export default function MyPage() {
                   </div>
 
                   <div className="mypage-card-info">
-                    <div className="mypage-card-category">
-                      {item.category}
-                    </div>
+                    <div className="mypage-card-category">{item.category}</div>
                     <div className="mypage-card-title">{item.title}</div>
                     <div className="mypage-card-price">
                       {item.price.toLocaleString()} <span>원</span>
