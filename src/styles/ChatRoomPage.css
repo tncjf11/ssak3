@@ -88,7 +88,7 @@
 .room-main {
   overflow-y: auto;
   background: #fafafa;
-  padding: 10px 12px 16px;
+  padding: 10px 12px 160px; /* ⬅️ 아래쪽 여유: 배너 + 입력창만큼 충분히 */
 }
 
 .empty-hint {
@@ -167,28 +167,25 @@
 }
 
 /* =========================
-   안전 배너 (safe-banner)
+   안전 배너
 ========================= */
 .safe-banner {
   position: sticky;
-  bottom: 68px;
+  bottom: 125px;
   background: #EEEDED;
   border-top: 1px solid #E5D5C8;
   padding: 12px 14px;
   padding-left: 52px;
   z-index: 2;
-  position: relative;
 }
 
-/* warning_mark 아이콘 전용 */
-.safe-banner .safe-icon {
+.safe-icon {
   position: absolute;
   left: 18px;
   top: 34%;
   transform: translateY(-50%);
   width: 22px;
   height: 22px;
-  object-fit: contain;
 }
 
 .safe-top {
@@ -244,7 +241,7 @@
   color: #bfbfbf;
 }
 
-/* ===== 카메라 아이콘 전용 ===== */
+/* 카메라 아이콘 */
 .input-bar .icon-btn.inside {
   position: absolute;
   right: 6px;
@@ -252,7 +249,7 @@
   transform: translateY(-50%);
   border: none;
   background: transparent;
-  width: 40px;   /* 버튼 박스 */
+  width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
@@ -260,7 +257,7 @@
 }
 
 .input-bar .icon-btn.inside .icon-img {
-  width: 28px;   /* 실제 카메라 그림 크기 */
+  width: 28px;
   height: 28px;
   object-fit: contain;
 }
@@ -293,7 +290,7 @@
 }
 
 /* =========================
-   Backdrop (공통)
+   Backdrop 공통
 ========================= */
 .sheet-backdrop {
   position: fixed;
@@ -315,14 +312,10 @@
   border-radius: 20px 20px 0 0;
   padding: 14px 14px 18px;
   box-shadow: 0 -4px 20px rgba(0,0,0,.12);
-
-  /* BottomNav 위에 살짝 띄워 두고 싶으면 높이 조절 */
   margin-bottom: 68px !important;
 }
 
-/* =========================
-   메뉴 시트 (⋮)
-========================= */
+/* 메뉴 시트 */
 .bottom-sheet.menu-sheet {
   background: #F2F1F0;
   border-radius: 20px 20px 0 0;
@@ -349,9 +342,7 @@
   color: #2B0C0B !important;
 }
 
-/* =========================
-   첨부 시트
-========================= */
+/* 첨부 시트 */
 .sheet-item.close {
   background: #ece9e7;
 }
@@ -378,9 +369,7 @@
   background: #eee;
 }
 
-/* =========================
-   이미지 전체 보기
-========================= */
+/* 이미지 전체 보기 */
 .img-viewer-backdrop {
   position: fixed;
   inset: 0;
@@ -396,17 +385,16 @@
   max-height: 100%;
   object-fit: contain;
 }
-/* =========================
-   카메라 모달
-========================= */
+
+/* 카메라 모달 */
 .cam-backdrop {
   position: fixed;
-  inset: 0;                           /* 화면 전체 덮기 */
-  background: rgba(0, 0, 0, 0.55);    /* 반투명 검정 배경 */
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1500;                      /* 시트/배너 위로 */
+  z-index: 1500;
 }
 
 .cam-modal {
@@ -465,6 +453,7 @@
 .cam-btn.primary {
   background: #ff5c5c;
 }
+
 .bottom-sheet.attach-sheet {
-  border-radius: 20px 20px 0 0;  /* 위-위-아래-아래 */
+  border-radius: 20px 20px 0 0;
 }

@@ -13,8 +13,10 @@ import camIcon from "../image/icon_camera.png";
 import sendIcon from "../image/icon_send.png";
 import warningIcon from "../image/warning_mark.png";
 
-const API_BASE = "http://localhost:8080";
-const USER_ID = 1;
+// 나중에 실서버 붙일 때 여기서 BASE_URL / USER_ID 가져다 쓰면 됨
+// import { BASE_URL } from "../lib/api";
+// const API_BASE = BASE_URL;
+// const USER_ID = 1;
 
 function formatKoreanTime(dateLike) {
   const d = new Date(dateLike);
@@ -43,6 +45,7 @@ export default function ChatRoomPage() {
   const roomId = id || "temp";
   const nav = useNavigate();
 
+  // 🔹 채팅방 메타(상대, 상품) – 지금은 mock, 나중에 API로 교체
   const [roomMeta] = useState({
     roomId,
     peer: { id: "peer-1", nickname: "닉네임12345" },
@@ -54,6 +57,7 @@ export default function ChatRoomPage() {
     },
   });
 
+  // 🔹 메시지 목록 – 지금은 로컬 상태, 나중에 WebSocket / 폴링으로 교체
   const [messages, setMessages] = useState([
     {
       id: "m1",
@@ -86,6 +90,7 @@ export default function ChatRoomPage() {
   const bottomRef = useRef(null);
   const fileInputRef = useRef(null);
 
+  // 🔹 새 메시지 들어올 때마다 맨 아래로 스크롤
   useEffect(() => {
     requestAnimationFrame(() => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -94,6 +99,7 @@ export default function ChatRoomPage() {
 
   const canSend = text.trim().length > 0 && !uploading;
 
+  // 🔹 텍스트 메시지 전송 (지금은 프론트에서만 optimistic)
   const handleSend = () => {
     if (!canSend) return;
     const content = text.trim();
@@ -112,6 +118,7 @@ export default function ChatRoomPage() {
     };
     setMessages((p) => [...p, optimistic]);
 
+    // 나중에 여기서 실제 POST / 메시지 전송 후 상태 업데이트
     setTimeout(() => {
       setMessages((p) =>
         p.map((m) => (m.id === tempId ? { ...m, sendStatus: "sent" } : m))
@@ -119,6 +126,7 @@ export default function ChatRoomPage() {
     }, 400);
   };
 
+  // 🔹 파일 첨부(갤러리)로 이미지/동영상 전송
   const onFilesSelected = async (e) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
@@ -139,6 +147,7 @@ export default function ChatRoomPage() {
         };
         setMessages((prev) => [...prev, optimistic]);
 
+        // 나중에는 여기서 실제 업로드 후 URL로 교체
         setTimeout(() => {
           setMessages((prev) =>
             prev.map((m) =>
@@ -153,6 +162,38 @@ export default function ChatRoomPage() {
     }
   };
 
+  // 🔹 카메라 촬영 후 "이 사진 사용" 눌렀을 때 → 바로 이미지 메시지로 추가
+  const handleCameraCapture = (blob) => {
+    setCameraOpen(false);
+    if (!blob) return;
+
+    const url = URL.createObjectURL(blob);
+    const tempId = "tmp_cam_" + Date.now();
+
+    const optimistic = {
+      id: tempId,
+      tempId,
+      roomId,
+      senderId: "me",
+      type: "image",
+      media: { url },
+      createdAt: new Date().toISOString(),
+      sendStatus: "sending",
+    };
+
+    setMessages((prev) => [...prev, optimistic]);
+
+    // 나중에 여기서 실제 업로드 → 성공 시 sendStatus 'sent'로 변경
+    setTimeout(() => {
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === tempId ? { ...m, sendStatus: "sent" } : m
+        )
+      );
+    }, 500);
+  };
+
+  // 🔹 날짜 디바이더 포함해서 렌더링용 배열로 변환
   const rendered = useMemo(() => {
     if (!messages.length) return [];
     const out = [];
@@ -174,10 +215,12 @@ export default function ChatRoomPage() {
     return out;
   }, [messages]);
 
+  // 🔹 채팅방 나가기
   const handleLeaveRoom = async () => {
     setMenuOpen(false);
     if (!window.confirm("이 채팅방을 나가시겠어요?")) return;
 
+    // 나중에 DELETE /api/chatrooms/{id} 같은 API 붙이면 여기서 호출
     alert("채팅방을 나갔습니다.");
     nav("/chat");
   };
@@ -187,9 +230,17 @@ export default function ChatRoomPage() {
       <div className="room-frame">
         {/* 상단 */}
         <header className="room-topbar">
-          <button className="top-btn" onClick={() => nav(-1)}>←</button>
+          <button className="top-btn" onClick={() => nav(-1)} aria-label="뒤로가기">
+            ←
+          </button>
           <h1 className="room-title">{roomMeta.peer.nickname}</h1>
-          <button className="top-btn" onClick={() => setMenuOpen(true)}>⋮</button>
+          <button
+            className="top-btn"
+            onClick={() => setMenuOpen(true)}
+            aria-label="메뉴 열기"
+          >
+            ⋮
+          </button>
         </header>
 
         {/* 상품 카드 */}
@@ -232,7 +283,7 @@ export default function ChatRoomPage() {
 
         {/* 안전 배너 */}
         <div className="safe-banner">
-          <img src={warningIcon} className="safe-icon" alt="" />
+          <img src={warningIcon} className="safe-icon" alt="주의" />
           <div className="safe-top">
             [중고 거래 채팅 시 외부 채널 유도 및 개인정보 요구 금지]
           </div>
@@ -268,8 +319,10 @@ export default function ChatRoomPage() {
             <button
               className="icon-btn inside"
               onClick={() => setAttachOpen(true)}
+              type="button"
+              aria-label="사진/동영상 보내기"
             >
-              <img className="icon-img" src={camIcon} alt="" />
+              <img className="icon-img" src={camIcon} alt="카메라" />
             </button>
           </div>
 
@@ -277,8 +330,10 @@ export default function ChatRoomPage() {
             className={"send-btn" + (canSend ? "" : " disabled")}
             disabled={!canSend}
             onClick={handleSend}
+            type="button"
+            aria-label="전송"
           >
-            <img className="send-img" src={sendIcon} alt="" />
+            <img className="send-img" src={sendIcon} alt="전송" />
           </button>
         </footer>
 
@@ -335,7 +390,6 @@ export default function ChatRoomPage() {
                 카메라로 촬영
               </button>
             </div>
-            {/* 🔥 여기 onClick 없어서 안 닫히던 부분 수정 */}
             <button
               className="sheet-item close"
               onClick={() => setAttachOpen(false)}
@@ -350,10 +404,7 @@ export default function ChatRoomPage() {
       {cameraOpen && (
         <CameraModal
           onClose={() => setCameraOpen(false)}
-          onCapture={(blob) => {
-            setCameraOpen(false);
-            // TODO: blob으로 메시지 전송 로직 넣을 수 있음
-          }}
+          onCapture={handleCameraCapture}
         />
       )}
 
@@ -366,7 +417,7 @@ export default function ChatRoomPage() {
           <img
             className="img-viewer-img"
             src={imageViewerUrl}
-            alt=""
+            alt="미리보기"
             onClick={(e) => e.stopPropagation()}
           />
         </div>
@@ -388,18 +439,25 @@ function MessageBubble({ meId, msg, onImageClick }) {
             className="media"
             src={msg.media?.url}
             onClick={() => onImageClick(msg.media.url)}
-            alt=""
+            alt="이미지 메시지"
           />
         )}
 
         {msg.type === "video" && (
-          <video className="media" src={msg.media?.url} controls playsInline />
+          <video
+            className="media"
+            src={msg.media?.url}
+            controls
+            playsInline
+          />
         )}
       </div>
 
       <div className="meta">
         <span className="time">{formatKoreanTime(msg.createdAt)}</span>
-        {mine && msg.sendStatus === "sent" && <span className="read">읽음</span>}
+        {mine && msg.sendStatus === "sent" && (
+          <span className="read">읽음</span>
+        )}
         {mine && msg.sendStatus === "sending" && (
           <span className="read">전송중…</span>
         )}
