@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../styles/ProductPostPage.css";
 import galleryIcon from "../image/gallery1.png";
 import BottomNav from "./BottomNav";
+// 🔹 로딩 이미지 추가
+import loaderImg from "../image/loader.png";
 
 // ✅ api.js에서 BASE_URL 가져오기
 import { BASE_URL } from "../lib/api";
@@ -258,23 +260,14 @@ export default function ProductPostPage() {
   };
 
   // =========================
-  // 로딩 화면
+  // 로딩 화면 (상세페이지와 동일한 스피너 사용)
   // =========================
   if (loading) {
     return (
-      <div className="app-shell">
-        <div className="app-frame">
-          <header className="post-header">
-            <button className="back-btn" onClick={() => navigate(-1)}>
-              ←
-            </button>
-            <h1>상품 {isEdit ? "수정하기" : "등록하기"}</h1>
-            <span />
-          </header>
-          <main className="post-main">
-            <div>불러오는 중...</div>
-          </main>
-          <BottomNav />
+      <div className="ss-loading">
+        <div className="ss-loading-inner">
+          <img src={loaderImg} alt="로딩중" className="ss-loading-img" />
+          <div className="ss-loading-text">로딩중...</div>
         </div>
       </div>
     );
@@ -391,7 +384,9 @@ export default function ProductPostPage() {
                 <textarea
                   value={details}
                   onChange={(e) => setDetails(e.target.value)}
-                  placeholder="· 상품 브랜드, 모델명, 구매 시기, 하자 유무 등 상품 설명을 최대한 자세히 적어주세요."
+                  placeholder={
+                    "· 상품 브랜드, 모델명, 구매 시기, 하자 유무 등 상품 설명을 최대한 자세히 적어주세요.\n\n· 전화번호, SNS, 계정 등 개인 정보 입력은 제한될 수 있습니다."
+                  }
                 />
               </div>
             </section>
